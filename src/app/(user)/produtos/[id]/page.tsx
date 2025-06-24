@@ -1,10 +1,10 @@
-import ProductDetails from "@/components/user/ProductDetails"
-import RelatedProducts from "@/components/user/RelatedProducts"
+import ProductDetails from "@/app/(user)/components/ProductDetails";
+import RelatedProducts from "@/app/(user)/components/RelatedProducts";
 
 interface ProductPageProps {
   params: {
-    id: string
-  }
+    id: string;
+  };
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
@@ -15,5 +15,5 @@ export default function ProductPage({ params }: ProductPageProps) {
         <RelatedProducts />
       </div>
     </div>
-  )
+  );
 }

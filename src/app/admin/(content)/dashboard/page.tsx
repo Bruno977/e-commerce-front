@@ -1,6 +1,6 @@
-import DashboardStats from "@/components/admin/DashboardStats"
-import RecentOrders from "@/components/admin/RecentOrders"
-import SalesChart from "@/components/admin/SalesChart"
+import DashboardStats from "../components/DashboardStats";
+import RecentOrders from "../components/RecentOrders";
+import SalesChart from "../components/SalesChart";
 
 export default function AdminDashboard() {
   return (
@@ -17,5 +17,5 @@ export default function AdminDashboard() {
         <RecentOrders />
       </div>
     </div>
-  )
+  );
 }

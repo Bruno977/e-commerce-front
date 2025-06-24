@@ -1,11 +1,13 @@
-import ProductGrid from "@/components/user/ProductGrid"
-import ProductFilters from "@/components/user/ProductFilters"
+import ProductGrid from "@/app/(user)/components/ProductGrid";
+import ProductFilters from "@/app/(user)/components/ProductFilters";
 
 export default function ProductsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Todos os Produtos</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          Todos os Produtos
+        </h1>
         <p className="text-gray-600">Descubra nossa coleção completa</p>
       </div>
 
@@ -18,5 +20,5 @@ export default function ProductsPage() {
         </main>
       </div>
     </div>
-  )
+  );
 }

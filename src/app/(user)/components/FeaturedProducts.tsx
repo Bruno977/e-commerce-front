@@ -1,6 +1,6 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import ProductCarousel from "./ProductCarousel"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import ProductCarousel from "./ProductCarousel";
 
 const featuredProducts = [
   {
@@ -57,15 +57,18 @@ const featuredProducts = [
     rating: 4.9,
     reviews: 67,
   },
-]
+];
 
 export default function FeaturedProducts() {
   return (
     <section className="py-8 sm:py-12">
       <div className="text-center mb-8 sm:mb-12 px-4">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">Produtos em Destaque</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">
+          Produtos em Destaque
+        </h2>
         <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base">
-          Descubra nossa seleção especial dos produtos mais populares e bem avaliados
+          Descubra nossa seleção especial dos produtos mais populares e bem
+          avaliados
         </p>
       </div>
 
@@ -74,10 +77,15 @@ export default function FeaturedProducts() {
       </div>
 
       <div className="text-center mt-8 sm:mt-12 px-4">
-        <Button variant="outline" size="lg" asChild className="text-sm sm:text-base">
+        <Button
+          variant="outline"
+          size="lg"
+          asChild
+          className="text-sm sm:text-base"
+        >
           <Link href="/produtos">Ver Todos os Produtos</Link>
         </Button>
       </div>
     </section>
-  )
+  );
 }

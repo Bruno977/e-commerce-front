@@ -1,6 +1,6 @@
-import HeroCarousel from "@/components/user/HeroCarousel"
-import FeaturedProducts from "@/components/user/FeaturedProducts"
-import CategorySection from "@/components/user/CategorySection"
+import HeroCarousel from "@/app/(user)/components/HeroCarousel";
+import FeaturedProducts from "@/app/(user)/components/FeaturedProducts";
+import CategorySection from "@/app/(user)/components/CategorySection";
 
 export default function HomePage() {
   return (
@@ -11,5 +11,5 @@ export default function HomePage() {
         <FeaturedProducts />
       </div>
     </div>
-  )
+  );
 }
