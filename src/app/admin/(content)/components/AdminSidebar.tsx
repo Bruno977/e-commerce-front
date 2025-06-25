@@ -86,7 +86,7 @@ function SidebarContent({
                   collapsed && "justify-center"
                 )}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className={`w-5 h-5 shrink-0`} />
                 {!collapsed && <span className="ml-3">{item.title}</span>}
               </Link>
             </li>
