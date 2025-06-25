@@ -1,7 +1,7 @@
-import CategoryForm from "@/components/admin/CategoryForm"
-import { ArrowLeft } from "lucide-react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import CategoryForm from "../../components/CategoryForm";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function NewCategoryPage() {
   return (
@@ -14,11 +14,13 @@ export default function NewCategoryPage() {
         </Button>
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Nova Categoria</h1>
-          <p className="text-gray-600">Adicione uma nova categoria de produtos</p>
+          <p className="text-gray-600">
+            Adicione uma nova categoria de produtos
+          </p>
         </div>
       </div>
 
       <CategoryForm />
     </div>
-  )
+  );
 }

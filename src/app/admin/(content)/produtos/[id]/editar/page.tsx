@@ -1,12 +1,12 @@
-import ProductForm from "@/components/admin/ProductForm"
-import { ArrowLeft } from "lucide-react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import ProductForm from "../../../components/ProductForm";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 interface EditProductPageProps {
   params: {
-    id: string
-  }
+    id: string;
+  };
 }
 
 export default function EditProductPage({ params }: EditProductPageProps) {
@@ -26,5 +26,5 @@ export default function EditProductPage({ params }: EditProductPageProps) {
 
       <ProductForm productId={params.id} />
     </div>
-  )
+  );
 }

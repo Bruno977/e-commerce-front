@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
 const menuItems = [
   {
     title: "Dashboard",
-    href: "/admin",
+    href: "/admin/dashboard",
     icon: LayoutDashboard,
   },
   {
@@ -37,22 +37,22 @@ const menuItems = [
   },
   {
     title: "Pedidos",
-    href: "/admin/pedidos",
+    href: "#",
     icon: ShoppingCart,
   },
   {
     title: "Clientes",
-    href: "/admin/clientes",
+    href: "#",
     icon: Users,
   },
   {
     title: "Relatórios",
-    href: "/admin/relatorios",
+    href: "#",
     icon: BarChart3,
   },
   {
     title: "Configurações",
-    href: "/admin/configuracoes",
+    href: "#",
     icon: Settings,
   },
 ];

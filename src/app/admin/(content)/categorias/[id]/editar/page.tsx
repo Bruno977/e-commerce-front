@@ -1,12 +1,12 @@
-import CategoryForm from "@/components/admin/CategoryForm"
-import { ArrowLeft } from "lucide-react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import CategoryForm from "../../../components/CategoryForm";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 interface EditCategoryPageProps {
   params: {
-    id: string
-  }
+    id: string;
+  };
 }
 
 export default function EditCategoryPage({ params }: EditCategoryPageProps) {
@@ -26,5 +26,5 @@ export default function EditCategoryPage({ params }: EditCategoryPageProps) {
 
       <CategoryForm categoryId={params.id} />
     </div>
-  )
+  );
 }
