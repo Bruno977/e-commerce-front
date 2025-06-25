@@ -2,7 +2,7 @@
 import { cookies } from "next/headers";
 import { api } from "../../../config/api";
 import { FormState, SessionFormSchema } from "../definitions";
-import { encrypt } from "./encrypt";
+import { encrypt } from "../../../../../lib/actions/encrypt";
 import { redirect } from "next/navigation";
 
 export async function createSession(
