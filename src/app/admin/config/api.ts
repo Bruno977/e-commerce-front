@@ -1,4 +1,6 @@
 import axios from "axios";
+import { cookies } from "next/headers";
+import { decrypt } from "@/lib/actions/decrypt";
 
 const API_BASE_URL = process.env.ADMIN_API_URL;
 
@@ -7,9 +9,14 @@ export const api = axios.create({
 });
 
 // Adiciona um interceptador na requisição
-axios.interceptors.request.use(
-  function (config) {
-    // Faz alguma coisa antes da requisição ser enviada
+api.interceptors.request.use(
+  async function (config) {
+    const cookie = (await cookies()).get("session")?.value;
+    const session = await decrypt(cookie);
+
+    if (session?.access_token) {
+      config.headers.Authorization = `Bearer ${session.access_token}`;
+    }
     return config;
   },
   function (error) {
@@ -19,8 +26,8 @@ axios.interceptors.request.use(
 );
 
 // Adiciona um interceptador na resposta
-axios.interceptors.response.use(
-  function (response) {
+api.interceptors.response.use(
+  async function (response) {
     // Qualquer código de status que dentro do limite de 2xx faz com que está função seja acionada
     // Faz alguma coisa com os dados de resposta
     return response;
