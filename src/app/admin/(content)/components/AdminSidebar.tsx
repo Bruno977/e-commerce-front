@@ -69,12 +69,12 @@ function SidebarContent({
   return (
     <nav className="p-4">
       <ul className="space-y-2">
-        {menuItems.map((item) => {
+        {menuItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
 
           return (
-            <li key={item.href}>
+            <li key={index}>
               <Link
                 href={item.href}
                 onClick={onItemClick}

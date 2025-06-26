@@ -1,60 +1,33 @@
-import Image from "next/image"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import { Edit, Trash2, Eye } from "lucide-react"
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Edit, Trash2, Eye } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getCategories } from "../services/getCategories";
+import { CategoryProps } from "@/types/category";
 
-const categories = [
-  {
-    id: 1,
-    name: "Eletrônicos",
-    description: "Smartphones, notebooks, tablets e acessórios",
-    productsCount: 156,
-    status: "Ativo",
-    image: "/placeholder.svg?height=50&width=50",
-    createdAt: "2024-01-15",
-  },
-  {
-    id: 2,
-    name: "Moda",
-    description: "Roupas, calçados e acessórios de moda",
-    productsCount: 89,
-    status: "Ativo",
-    image: "/placeholder.svg?height=50&width=50",
-    createdAt: "2024-01-10",
-  },
-  {
-    id: 3,
-    name: "Casa & Jardim",
-    description: "Móveis, decoração e itens para jardim",
-    productsCount: 234,
-    status: "Ativo",
-    image: "/placeholder.svg?height=50&width=50",
-    createdAt: "2024-01-08",
-  },
-  {
-    id: 4,
-    name: "Esportes",
-    description: "Equipamentos esportivos e fitness",
-    productsCount: 67,
-    status: "Inativo",
-    image: "/placeholder.svg?height=50&width=50",
-    createdAt: "2024-01-05",
-  },
-  {
-    id: 5,
-    name: "Livros",
-    description: "Livros físicos e digitais",
-    productsCount: 123,
-    status: "Ativo",
-    image: "/placeholder.svg?height=50&width=50",
-    createdAt: "2024-01-03",
-  },
-]
+interface DataProps {
+  categories: CategoryProps[];
+}
 
 export default function CategoriesTable() {
+  // This useQuery could just as well happen in some deeper
+  // child to <Posts>, data will be available immediately either way
+  const { data } = useQuery<DataProps>({
+    queryKey: ["categories"],
+    queryFn: () => getCategories(),
+  });
   return (
     <Card>
       <CardHeader>
@@ -73,32 +46,41 @@ export default function CategoriesTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {categories.map((category) => (
+            {data?.categories?.map((category) => (
               <TableRow key={category.id}>
                 <TableCell>
                   <div className="flex items-center space-x-3">
                     <Image
-                      src={category.image || "/placeholder.svg"}
-                      alt={category.name}
+                      src={"/placeholder.svg"}
+                      alt={category.title}
                       width={50}
                       height={50}
                       className="rounded-md"
                     />
-                    <span className="font-medium">{category.name}</span>
+                    <span className="font-medium">{category.title}</span>
                   </div>
                 </TableCell>
                 <TableCell className="max-w-xs">
-                  <p className="text-sm text-gray-600 truncate">{category.description}</p>
+                  <p className="text-sm text-gray-600 truncate">
+                    {category.description}
+                  </p>
                 </TableCell>
                 <TableCell>
-                  <span className="font-medium">{category.productsCount}</span>
+                  <span className="font-medium">150</span>
                 </TableCell>
                 <TableCell>
-                  <Badge variant={category.status === "Ativo" ? "default" : "secondary"}>{category.status}</Badge>
+                  <Badge
+                    variant={
+                      "default"
+                      // category.status === "Ativo" ? "default" : "secondary"
+                    }
+                  >
+                    Ativo
+                  </Badge>
                 </TableCell>
                 <TableCell>
                   <span className="text-sm text-gray-600">
-                    {new Date(category.createdAt).toLocaleDateString("pt-BR")}
+                    {new Date(category.created_at).toLocaleDateString("pt-BR")}
                   </span>
                 </TableCell>
                 <TableCell>
@@ -124,5 +106,5 @@ export default function CategoriesTable() {
         </Table>
       </CardContent>
     </Card>
-  )
+  );
 }

@@ -1,9 +1,21 @@
-import CategoriesTable from "../components/CategoriesTable";
+import CategoriesTable from "./components/CategoriesTable";
 import { Button } from "@/components/ui/button";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import { getCategories } from "./services/getCategories";
 
-export default function AdminCategoriesPage() {
+export default async function AdminCategoriesPage() {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["categories"],
+    queryFn: getCategories,
+  });
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -21,7 +33,9 @@ export default function AdminCategoriesPage() {
         </Button>
       </div>
 
-      <CategoriesTable />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <CategoriesTable />
+      </HydrationBoundary>
     </div>
   );
 }
