@@ -66,15 +66,10 @@ export default function CategoriesTable() {
                   </p>
                 </TableCell>
                 <TableCell>
-                  <span className="font-medium">150</span>
+                  <span className="font-medium">{category.product_count}</span>
                 </TableCell>
                 <TableCell>
-                  <Badge
-                    variant={
-                      "default"
-                      // category.status === "Ativo" ? "default" : "secondary"
-                    }
-                  >
+                  <Badge variant={category.is_active ? "default" : "secondary"}>
                     Ativo
                   </Badge>
                 </TableCell>

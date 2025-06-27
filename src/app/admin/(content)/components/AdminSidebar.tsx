@@ -105,7 +105,7 @@ export default function AdminSidebar() {
       {/* Desktop Sidebar */}
       <div
         className={cn(
-          "hidden md:block bg-white border-r border-gray-200 transition-all duration-300",
+          "hidden md:block bg-white border-r border-gray-200 transition-all duration-300 min-h-screen",
           collapsed ? "w-16" : "w-64"
         )}
       >
