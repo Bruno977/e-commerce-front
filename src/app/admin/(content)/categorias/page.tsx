@@ -8,7 +8,6 @@ import {
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { getCategories } from "./services/getCategories";
-import { Suspense } from "react";
 
 export default async function AdminCategoriesPage({
   searchParams,
@@ -28,7 +27,7 @@ export default async function AdminCategoriesPage({
   });
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-6 md:justify-between md:items-center md:flex-row">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Categorias</h1>
           <p className="text-gray-600">
@@ -43,15 +42,7 @@ export default async function AdminCategoriesPage({
         </Button>
       </div>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <Suspense
-          fallback={
-            <div className="flex justify-center items-center h-64">
-              asdasdasd
-            </div>
-          }
-        >
-          <CategoriesTable />
-        </Suspense>
+        <CategoriesTable />
       </HydrationBoundary>
     </div>
   );

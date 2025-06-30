@@ -36,7 +36,7 @@ export function TableRowSkeleton({
       {Array.from({ length: rows }).map((_, rowIndex) => (
         <tr key={rowIndex}>
           {Array.from({ length: columns }).map((_, colIndex) => (
-            <td key={colIndex} className="px-6 py-4">
+            <td key={colIndex} className="px-6 py-4 min-w-64 md:min-w-full">
               <Skeleton className="h-4 w-full" />
             </td>
           ))}

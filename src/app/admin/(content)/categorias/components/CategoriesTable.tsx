@@ -90,7 +90,7 @@ export default function CategoriesTable() {
                               alt={category.title}
                               width={50}
                               height={50}
-                              className="rounded-md"
+                              className="rounded-md flex-shrink-0"
                             />
                             <span className="font-medium">
                               {category.title}
