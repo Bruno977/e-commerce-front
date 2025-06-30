@@ -9,12 +9,21 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { getCategories } from "./services/getCategories";
 
-export default async function AdminCategoriesPage() {
+export default async function AdminCategoriesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const queryClient = new QueryClient();
+  const { page, perPage } = await searchParams;
 
   await queryClient.prefetchQuery({
-    queryKey: ["categories"],
-    queryFn: getCategories,
+    queryKey: ["categories", page, perPage],
+    queryFn: () =>
+      getCategories({
+        page: parseInt(page as string, 10) || 1,
+        perPage: parseInt(perPage as string, 10) || 10,
+      }),
   });
   return (
     <div className="space-y-6">

@@ -17,28 +17,34 @@ import { useQuery } from "@tanstack/react-query";
 import { getCategories } from "../services/getCategories";
 import { CategoryProps } from "@/types/category";
 import Pagination from "@/components/pagination";
-import { useState } from "react";
+import { PaginationProps } from "@/types/pagination";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface DataProps {
   categories: CategoryProps[];
+  pagination: PaginationProps;
 }
 
 export default function CategoriesTable() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const currentPage = parseInt(searchParams.get("page") || "1", 10);
+  const itemsPerPage = parseInt(searchParams.get("perPage") || "10", 10);
 
   const { data } = useQuery<DataProps>({
-    queryKey: ["categories"],
-    queryFn: () => getCategories(),
+    queryKey: ["categories", currentPage, itemsPerPage],
+    queryFn: () => getCategories({ page: currentPage, perPage: itemsPerPage }),
   });
 
-  // Calcular paginação
-  const totalItems = 10;
-  // const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const totalPages = 10;
+  const totalItems = data?.pagination.totalItems || 0;
+  const totalPages = data?.pagination.totalPages || 1;
   const handleItemsPerPageChange = (newItemsPerPage: number) => {
-    setItemsPerPage(newItemsPerPage);
-    setCurrentPage(1);
+    router.push(`?page=1&perPage=${newItemsPerPage}`);
+  };
+
+  const handlePageChange = (page: number) => {
+    router.push(`?page=${page}&perPage=${itemsPerPage}`);
   };
 
   return (
@@ -125,7 +131,7 @@ export default function CategoriesTable() {
           totalPages={totalPages}
           totalItems={totalItems}
           itemsPerPage={itemsPerPage}
-          onPageChange={setCurrentPage}
+          onPageChange={handlePageChange}
           onItemsPerPageChange={handleItemsPerPageChange}
         />
       </CardContent>

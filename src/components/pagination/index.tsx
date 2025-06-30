@@ -66,7 +66,7 @@ export default function Pagination({
     return rangeWithDots;
   };
 
-  if (totalPages <= 1) return null;
+  // if (totalPages <= 1) return null;
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
