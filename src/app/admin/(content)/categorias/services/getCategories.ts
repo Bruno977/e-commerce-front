@@ -13,5 +13,6 @@ export async function getCategories({ page, perPage }: CategoryProps) {
       perPage,
     },
   });
+
   return response.data;
 }

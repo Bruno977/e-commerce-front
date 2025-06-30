@@ -8,6 +8,7 @@ import {
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { getCategories } from "./services/getCategories";
+import { Suspense } from "react";
 
 export default async function AdminCategoriesPage({
   searchParams,
@@ -41,9 +42,16 @@ export default async function AdminCategoriesPage({
           </Link>
         </Button>
       </div>
-
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <CategoriesTable />
+        <Suspense
+          fallback={
+            <div className="flex justify-center items-center h-64">
+              asdasdasd
+            </div>
+          }
+        >
+          <CategoriesTable />
+        </Suspense>
       </HydrationBoundary>
     </div>
   );

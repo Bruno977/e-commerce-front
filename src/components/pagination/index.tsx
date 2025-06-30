@@ -110,7 +110,7 @@ export default function Pagination({
             size="icon"
             onClick={() => onPageChange(1)}
             disabled={currentPage === 1}
-            className="hidden sm:flex w-8 h-8"
+            className="hidden sm:flex w-8 h-8 cursor-pointer"
           >
             <ChevronsLeft className="w-4 h-4" />
           </Button>
@@ -123,7 +123,7 @@ export default function Pagination({
             disabled={currentPage === 1}
             className="w-8 h-8"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-4 h-4 cursor-pointer" />
           </Button>
 
           {/* Page numbers */}
@@ -137,7 +137,7 @@ export default function Pagination({
                     variant={currentPage === page ? "default" : "outline"}
                     size="icon"
                     onClick={() => onPageChange(page as number)}
-                    className="w-8 h-8 text-sm"
+                    className="w-8 h-8 text-sm cursor-pointer"
                   >
                     {page}
                   </Button>
@@ -152,7 +152,7 @@ export default function Pagination({
             size="icon"
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="w-8 h-8"
+            className="w-8 h-8 cursor-pointer"
           >
             <ChevronRight className="w-4 h-4" />
           </Button>
@@ -165,7 +165,7 @@ export default function Pagination({
             disabled={currentPage === totalPages}
             className="hidden sm:flex w-8 h-8"
           >
-            <ChevronsRight className="w-4 h-4" />
+            <ChevronsRight className="w-4 h-4 cursor-pointer" />
           </Button>
         </div>
       </div>
