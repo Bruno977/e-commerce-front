@@ -16,6 +16,8 @@ api.interceptors.request.use(
     const cookie = (await cookies()).get("session")?.value;
     const session = await decrypt(cookie);
 
+    console.log("Session:", session?.access_token);
+
     if (session?.access_token) {
       config.headers.Authorization = `Bearer ${session.access_token}`;
     }

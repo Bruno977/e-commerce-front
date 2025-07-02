@@ -1,52 +1,55 @@
-"use client"
+"use client";
+import React from "react";
 
-import type React from "react"
-
-import { useState } from "react"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Upload, X, ImageIcon } from "lucide-react"
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Upload, X, ImageIcon } from "lucide-react";
 
 interface ImageUploadProps {
-  value?: string
-  onChange: (value: string) => void
-  onRemove: () => void
-  disabled?: boolean
+  value?: File;
+  onChange: (file: File) => void;
+  onRemove: () => void;
+  disabled?: boolean;
 }
 
-export default function ImageUpload({ value, onChange, onRemove, disabled }: ImageUploadProps) {
-  const [isUploading, setIsUploading] = useState(false)
+export default function ImageUpload({
+  value,
+  onChange,
+  onRemove,
+  disabled,
+}: ImageUploadProps) {
+  const [preview, setPreview] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (value) {
+      const previewUrl = URL.createObjectURL(value);
+      setPreview(previewUrl);
+
+      return () => {
+        URL.revokeObjectURL(previewUrl);
+      };
+    } else {
+      setPreview(null);
+    }
+  }, [value]);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    setIsUploading(true)
-
-    try {
-      // Simular upload - em produção, implementar upload real
-      const formData = new FormData()
-      formData.append("file", file)
-
-      // Simular delay do upload
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
-      // Simular URL retornada
-      const mockUrl = `/placeholder.svg?height=300&width=300&text=${file.name}`
-      onChange(mockUrl)
-    } catch (error) {
-      console.error("Erro no upload:", error)
-    } finally {
-      setIsUploading(false)
-    }
-  }
+    const file = e.target.files?.[0];
+    if (!file) return;
+    onChange(file);
+  };
 
   return (
     <div className="space-y-4">
       {value ? (
         <div className="relative">
           <div className="relative aspect-square w-full max-w-sm mx-auto">
-            <Image src={value || "/placeholder.svg"} alt="Upload" fill className="object-cover rounded-lg" />
+            <Image
+              src={preview || "/placeholder.svg"}
+              alt="Upload"
+              fill
+              className="object-cover rounded-lg"
+            />
           </div>
           <Button
             type="button"
@@ -66,7 +69,7 @@ export default function ImageUpload({ value, onChange, onRemove, disabled }: Ima
             <div className="mt-4">
               <label htmlFor="image-upload" className="cursor-pointer">
                 <span className="mt-2 block text-sm font-medium text-gray-900">
-                  {isUploading ? "Enviando..." : "Clique para fazer upload"}
+                  Clique para fazer upload
                 </span>
                 <input
                   id="image-upload"
@@ -74,10 +77,11 @@ export default function ImageUpload({ value, onChange, onRemove, disabled }: Ima
                   className="sr-only"
                   accept="image/*"
                   onChange={handleUpload}
-                  disabled={disabled || isUploading}
                 />
               </label>
-              <p className="mt-1 text-xs text-gray-500">PNG, JPG, GIF até 10MB</p>
+              <p className="mt-1 text-xs text-gray-500">
+                PNG, JPG, GIF até 10MB
+              </p>
             </div>
           </div>
         </div>
@@ -88,13 +92,12 @@ export default function ImageUpload({ value, onChange, onRemove, disabled }: Ima
           type="button"
           variant="outline"
           className="w-full"
-          disabled={disabled || isUploading}
           onClick={() => document.getElementById("image-upload")?.click()}
         >
           <Upload className="w-4 h-4 mr-2" />
-          {isUploading ? "Enviando..." : "Selecionar Imagem"}
+          Selecionar Imagem
         </Button>
       )}
     </div>
-  )
+  );
 }

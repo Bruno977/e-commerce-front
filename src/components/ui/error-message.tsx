@@ -129,3 +129,7 @@ export function InlineError({
     </div>
   );
 }
+
+export function ErrorInputForm({ message }: { message: string }) {
+  return <p className="text-red-600 pt-0.5 text-xs">{message}</p>;
+}
