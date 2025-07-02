@@ -5,6 +5,8 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
+import { toast } from "sonner";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,7 +19,7 @@ import { createCategory } from "../lib/actions/create-category";
 import { CategoryFormSchema } from "../lib/definitions";
 import { ErrorInputForm } from "@/components/ui/error-message";
 
-export type CategoryFormData = z.infer<typeof CategoryFormSchema>; // Inferindo o tipo do esquema
+export type CategoryFormData = z.infer<typeof CategoryFormSchema>;
 
 export default function CategoryForm() {
   const {
@@ -36,7 +38,11 @@ export default function CategoryForm() {
   const categoryMutation = useMutation({
     mutationFn: createCategory,
     onSuccess: () => {
+      toast.success("Categoria criada com sucesso!");
       reset();
+    },
+    onError: (error: any) => {
+      toast.error(`Erro ao criar categoria: ${error.message}`);
     },
   });
 
