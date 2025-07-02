@@ -5,7 +5,7 @@ import { decrypt } from "@/lib/actions/decrypt";
 
 const routePatterns = {
   admin: {
-    protected: /^\/admin\/(dashboard)/,
+    protected: /^\/admin\/(dashboard|categorias|produtos)/,
     public: /^\/admin\/login/,
   },
   client: {
