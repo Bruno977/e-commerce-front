@@ -42,7 +42,11 @@ export default function CategoryForm() {
       reset();
     },
     onError: (error: any) => {
-      toast.error(`Erro ao criar categoria: ${error.message}`);
+      toast.error(
+        `Erro ao criar categoria: ${
+          error?.message || "Ocorreu um erro inesperado."
+        }`
+      );
     },
   });
 
