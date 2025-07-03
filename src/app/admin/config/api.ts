@@ -16,8 +16,6 @@ api.interceptors.request.use(
     const cookie = (await cookies()).get("session")?.value;
     const session = await decrypt(cookie);
 
-    console.log("Session:", session?.access_token);
-
     if (session?.access_token) {
       config.headers.Authorization = `Bearer ${session.access_token}`;
     }
@@ -37,6 +35,7 @@ api.interceptors.response.use(
     return response;
   },
   function (error) {
+    console.log("Error in API response:", error);
     // Qualquer código de status que não esteja no limite do código 2xx faz com que está função seja acionada
     // Faz alguma coisa com o erro da resposta
     return Promise.reject(error);
