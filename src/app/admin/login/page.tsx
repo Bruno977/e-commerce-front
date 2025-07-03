@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Shield } from "lucide-react";
-import { FormLogin } from "./components/form-login";
+import { FormLogin } from "./components/formLogin";
 
 export default function AdminLoginPage() {
   return (
