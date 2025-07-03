@@ -7,7 +7,7 @@ import {
 } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import { getCategories } from "./services/getCategories";
+import { getCategories } from "./lib/actions/get-categories";
 
 export default async function AdminCategoriesPage({
   searchParams,

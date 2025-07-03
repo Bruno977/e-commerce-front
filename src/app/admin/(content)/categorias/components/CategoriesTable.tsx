@@ -14,7 +14,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Edit, Trash2, Eye } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { getCategories } from "../services/getCategories";
+import { getCategories } from "../lib/actions/get-categories";
 import { CategoryProps } from "@/types/category";
 import Pagination from "@/components/pagination";
 import { PaginationProps } from "@/types/pagination";
