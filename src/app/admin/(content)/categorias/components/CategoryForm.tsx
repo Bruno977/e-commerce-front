@@ -14,14 +14,29 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import ImageUpload from "../../components/ImageUpload";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createCategory } from "../lib/actions/create-category";
 import { CategoryFormSchema } from "../lib/definitions";
-import { ErrorInputForm } from "@/components/ui/error-message";
+import { ErrorInputForm, ErrorMessage } from "@/components/ui/error-message";
+import { getCategory } from "../lib/actions/get-category";
+
+import { useEffect } from "react";
+import { CategoryProps } from "@/types/category";
+import { ProductCardSkeleton } from "@/components/ui/skeleton";
+import { updateCategory } from "../lib/actions/update-category";
+import { useRouter } from "next/navigation";
 
 export type CategoryFormData = z.infer<typeof CategoryFormSchema>;
 
-export default function CategoryForm() {
+interface CategoryFormProps {
+  categoryId?: string;
+}
+
+export default function CategoryForm({ categoryId }: CategoryFormProps) {
+  const router = useRouter();
+  const isEditing = Boolean(categoryId);
+  const queryClient = useQueryClient();
+
   const {
     control,
     register,
@@ -35,24 +50,69 @@ export default function CategoryForm() {
       image: undefined,
     },
   });
+
+  const { data, isLoading, error, refetch } = useQuery<CategoryProps>({
+    queryKey: ["category", categoryId],
+    queryFn: () => getCategory({ categoryId }),
+    enabled: isEditing,
+  });
+
   const categoryMutation = useMutation({
-    mutationFn: createCategory,
+    mutationFn: isEditing ? updateCategory : createCategory,
     onSuccess: () => {
-      toast.success("Categoria criada com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      const messageToast = isEditing
+        ? "Categoria atualizada com sucesso!"
+        : "Categoria criada com sucesso!";
+
+      toast.success(messageToast);
+      if (isEditing) {
+        router.push("/admin/categorias");
+        return;
+      }
       reset();
     },
     onError: (error: any) => {
-      toast.error(
-        `Erro ao criar categoria: ${
-          error?.message || "Ocorreu um erro inesperado."
-        }`
-      );
+      const messageToast = isEditing
+        ? "Erro ao atualizar categoria: "
+        : "Erro ao criar categoria: ";
+      toast.error(`${messageToast} ${error?.message}`);
     },
   });
 
   const onSubmit = (data: CategoryFormData) => {
-    categoryMutation.mutate(data);
+    const payload = {
+      categoryId,
+      ...data,
+    };
+    categoryMutation.mutate(payload);
   };
+  const handleRetry = () => {
+    refetch();
+  };
+  const labelButton = categoryMutation.isPending
+    ? "Salvando..."
+    : isEditing
+    ? "Atualizar Categoria"
+    : "Criar Categoria";
+
+  useEffect(() => {
+    if (data && isEditing) {
+      reset({
+        title: data.title,
+        description: data.description,
+        isActive: data.is_active,
+      });
+    }
+  }, [data, isEditing, reset]);
+
+  if (isEditing && isLoading) {
+    return <ProductCardSkeleton />;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error.message} onRetry={handleRetry} />;
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -66,7 +126,11 @@ export default function CategoryForm() {
             <CardContent className="space-y-4">
               <div>
                 <Label htmlFor="title">Nome da Categoria</Label>
-                <Input {...register("title")} placeholder="Ex: Eletrônicos" />
+                <Input
+                  {...register("title")}
+                  disabled={isEditing && isLoading}
+                  placeholder="Ex: Eletrônicos"
+                />
                 {errors.title?.message && (
                   <ErrorInputForm message={errors.title?.message} />
                 )}
@@ -76,6 +140,7 @@ export default function CategoryForm() {
                 <Label htmlFor="description">Descrição</Label>
                 <Textarea
                   {...register("description")}
+                  disabled={isEditing && isLoading}
                   placeholder="Descreva a categoria..."
                   rows={4}
                 />
@@ -96,6 +161,7 @@ export default function CategoryForm() {
                 <Label htmlFor="metaTitle">Título SEO</Label>
                 <Input
                   {...register("metaTitle")}
+                  disabled={isEditing && isLoading}
                   placeholder="Título para mecanismos de busca"
                 />
                 {errors.metaTitle?.message && (
@@ -110,6 +176,7 @@ export default function CategoryForm() {
                 <Label htmlFor="metaDescription">Descrição SEO</Label>
                 <Textarea
                   {...register("metaDescription")}
+                  disabled={isEditing && isLoading}
                   placeholder="Descrição para mecanismos de busca"
                   rows={3}
                 />
@@ -139,6 +206,7 @@ export default function CategoryForm() {
                   render={({ field }) => (
                     <Switch
                       checked={field.value}
+                      disabled={isEditing && isLoading}
                       onCheckedChange={field.onChange}
                     />
                   )}
@@ -165,6 +233,7 @@ export default function CategoryForm() {
                     value={field.value}
                     onChange={(file) => field.onChange(file)}
                     onRemove={() => field.onChange(undefined)}
+                    disabled={isEditing && isLoading}
                   />
                 )}
               />
@@ -181,22 +250,19 @@ export default function CategoryForm() {
                 <Button
                   type="submit"
                   className="w-full cursor-pointer"
-                  disabled={categoryMutation.isPending}
+                  disabled={
+                    categoryMutation.isPending || (isEditing && isLoading)
+                  }
                 >
-                  {categoryMutation.isPending
-                    ? "Salvando..."
-                    : "Criar Categoria"}
-                  {/* {isLoading
-                    ? "Salvando..."
-                    : categoryId
-                    ? "Atualizar Categoria"
-                    : "Criar Categoria"} */}
+                  {labelButton}
                 </Button>
                 <Button
                   type="button"
                   variant="outline"
                   className="w-full"
-                  disabled={categoryMutation.isPending}
+                  disabled={
+                    categoryMutation.isPending || (isEditing && isLoading)
+                  }
                 >
                   Cancelar
                 </Button>

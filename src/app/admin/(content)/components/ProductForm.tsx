@@ -1,21 +1,27 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Switch } from "@/components/ui/switch"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import ImageUpload from "./ImageUpload"
-import MultiImageUpload from "./MultiImageUpload"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ImageUpload from "./ImageUpload";
+import MultiImageUpload from "./MultiImageUpload";
 
 interface ProductFormProps {
-  productId?: string
+  productId?: string;
 }
 
 const categories = [
@@ -24,7 +30,7 @@ const categories = [
   { id: 3, name: "Casa & Jardim" },
   { id: 4, name: "Esportes" },
   { id: 5, name: "Livros" },
-]
+];
 
 export default function ProductForm({ productId }: ProductFormProps) {
   const [formData, setFormData] = useState({
@@ -52,23 +58,22 @@ export default function ProductForm({ productId }: ProductFormProps) {
     metaTitle: "",
     metaDescription: "",
     tags: "",
-  })
+  });
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
 
     try {
-      console.log("Salvando produto:", formData)
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (error) {
-      console.error("Erro ao salvar produto:", error)
+      console.error("Erro ao salvar produto:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const generateSlug = (name: string) => {
     return name
@@ -78,16 +83,16 @@ export default function ProductForm({ productId }: ProductFormProps) {
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-")
-      .trim()
-  }
+      .trim();
+  };
 
   const handleNameChange = (value: string) => {
     setFormData({
       ...formData,
       name: value,
       slug: generateSlug(value),
-    })
-  }
+    });
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -124,7 +129,12 @@ export default function ProductForm({ productId }: ProductFormProps) {
                     <Textarea
                       id="shortDescription"
                       value={formData.shortDescription}
-                      onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          shortDescription: e.target.value,
+                        })
+                      }
                       placeholder="Descrição breve do produto..."
                       rows={3}
                     />
@@ -135,7 +145,12 @@ export default function ProductForm({ productId }: ProductFormProps) {
                     <Textarea
                       id="description"
                       value={formData.description}
-                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          description: e.target.value,
+                        })
+                      }
                       placeholder="Descrição detalhada do produto..."
                       rows={6}
                     />
@@ -145,14 +160,19 @@ export default function ProductForm({ productId }: ProductFormProps) {
                     <Label htmlFor="category">Categoria *</Label>
                     <Select
                       value={formData.categoryId}
-                      onValueChange={(value) => setFormData({ ...formData, categoryId: value })}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, categoryId: value })
+                      }
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione uma categoria" />
                       </SelectTrigger>
                       <SelectContent>
                         {categories.map((category) => (
-                          <SelectItem key={category.id} value={category.id.toString()}>
+                          <SelectItem
+                            key={category.id}
+                            value={category.id.toString()}
+                          >
                             {category.name}
                           </SelectItem>
                         ))}
@@ -165,7 +185,9 @@ export default function ProductForm({ productId }: ProductFormProps) {
                     <Input
                       id="tags"
                       value={formData.tags}
-                      onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, tags: e.target.value })
+                      }
                       placeholder="smartphone, premium, tecnologia (separadas por vírgula)"
                     />
                   </div>
@@ -187,7 +209,9 @@ export default function ProductForm({ productId }: ProductFormProps) {
                         type="number"
                         step="0.01"
                         value={formData.price}
-                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, price: e.target.value })
+                        }
                         placeholder="0.00"
                         required
                       />
@@ -200,10 +224,17 @@ export default function ProductForm({ productId }: ProductFormProps) {
                         type="number"
                         step="0.01"
                         value={formData.comparePrice}
-                        onChange={(e) => setFormData({ ...formData, comparePrice: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            comparePrice: e.target.value,
+                          })
+                        }
                         placeholder="0.00"
                       />
-                      <p className="text-sm text-gray-500 mt-1">Preço original (para mostrar desconto)</p>
+                      <p className="text-sm text-gray-500 mt-1">
+                        Preço original (para mostrar desconto)
+                      </p>
                     </div>
                   </div>
 
@@ -214,10 +245,14 @@ export default function ProductForm({ productId }: ProductFormProps) {
                       type="number"
                       step="0.01"
                       value={formData.cost}
-                      onChange={(e) => setFormData({ ...formData, cost: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, cost: e.target.value })
+                      }
                       placeholder="0.00"
                     />
-                    <p className="text-sm text-gray-500 mt-1">Custo para cálculo de margem (não visível na loja)</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Custo para cálculo de margem (não visível na loja)
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -235,7 +270,9 @@ export default function ProductForm({ productId }: ProductFormProps) {
                       <Input
                         id="sku"
                         value={formData.sku}
-                        onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, sku: e.target.value })
+                        }
                         placeholder="PROD-001"
                       />
                     </div>
@@ -245,7 +282,9 @@ export default function ProductForm({ productId }: ProductFormProps) {
                       <Input
                         id="barcode"
                         value={formData.barcode}
-                        onChange={(e) => setFormData({ ...formData, barcode: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, barcode: e.target.value })
+                        }
                         placeholder="1234567890123"
                       />
                     </div>
@@ -257,7 +296,9 @@ export default function ProductForm({ productId }: ProductFormProps) {
                       id="stock"
                       type="number"
                       value={formData.stock}
-                      onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, stock: e.target.value })
+                      }
                       placeholder="0"
                     />
                   </div>
@@ -269,7 +310,9 @@ export default function ProductForm({ productId }: ProductFormProps) {
                       type="number"
                       step="0.001"
                       value={formData.weight}
-                      onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, weight: e.target.value })
+                      }
                       placeholder="0.000"
                     />
                   </div>
@@ -284,7 +327,10 @@ export default function ProductForm({ productId }: ProductFormProps) {
                         onChange={(e) =>
                           setFormData({
                             ...formData,
-                            dimensions: { ...formData.dimensions, length: e.target.value },
+                            dimensions: {
+                              ...formData.dimensions,
+                              length: e.target.value,
+                            },
                           })
                         }
                         placeholder="Comprimento"
@@ -296,7 +342,10 @@ export default function ProductForm({ productId }: ProductFormProps) {
                         onChange={(e) =>
                           setFormData({
                             ...formData,
-                            dimensions: { ...formData.dimensions, width: e.target.value },
+                            dimensions: {
+                              ...formData.dimensions,
+                              width: e.target.value,
+                            },
                           })
                         }
                         placeholder="Largura"
@@ -308,7 +357,10 @@ export default function ProductForm({ productId }: ProductFormProps) {
                         onChange={(e) =>
                           setFormData({
                             ...formData,
-                            dimensions: { ...formData.dimensions, height: e.target.value },
+                            dimensions: {
+                              ...formData.dimensions,
+                              height: e.target.value,
+                            },
                           })
                         }
                         placeholder="Altura"
@@ -330,7 +382,9 @@ export default function ProductForm({ productId }: ProductFormProps) {
                     <Input
                       id="slug"
                       value={formData.slug}
-                      onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, slug: e.target.value })
+                      }
                       placeholder="smartphone-premium-xyz"
                     />
                   </div>
@@ -340,7 +394,9 @@ export default function ProductForm({ productId }: ProductFormProps) {
                     <Input
                       id="metaTitle"
                       value={formData.metaTitle}
-                      onChange={(e) => setFormData({ ...formData, metaTitle: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, metaTitle: e.target.value })
+                      }
                       placeholder="Título para mecanismos de busca"
                     />
                   </div>
@@ -350,7 +406,12 @@ export default function ProductForm({ productId }: ProductFormProps) {
                     <Textarea
                       id="metaDescription"
                       value={formData.metaDescription}
-                      onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          metaDescription: e.target.value,
+                        })
+                      }
                       placeholder="Descrição para mecanismos de busca"
                       rows={3}
                     />
@@ -373,7 +434,9 @@ export default function ProductForm({ productId }: ProductFormProps) {
                 <Switch
                   id="isActive"
                   checked={formData.isActive}
-                  onCheckedChange={(checked) => setFormData({ ...formData, isActive: checked })}
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, isActive: checked })
+                  }
                 />
                 <Label htmlFor="isActive">Produto ativo</Label>
               </div>
@@ -382,7 +445,9 @@ export default function ProductForm({ productId }: ProductFormProps) {
                 <Switch
                   id="isFeatured"
                   checked={formData.isFeatured}
-                  onCheckedChange={(checked) => setFormData({ ...formData, isFeatured: checked })}
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, isFeatured: checked })
+                  }
                 />
                 <Label htmlFor="isFeatured">Produto em destaque</Label>
               </div>
@@ -397,7 +462,9 @@ export default function ProductForm({ productId }: ProductFormProps) {
             <CardContent>
               <ImageUpload
                 value={formData.featuredImage}
-                onChange={(url) => setFormData({ ...formData, featuredImage: url })}
+                onChange={(url) =>
+                  setFormData({ ...formData, featuredImage: url })
+                }
                 onRemove={() => setFormData({ ...formData, featuredImage: "" })}
               />
             </CardContent>
@@ -427,7 +494,11 @@ export default function ProductForm({ productId }: ProductFormProps) {
             <CardContent className="pt-6">
               <div className="space-y-2">
                 <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Salvando..." : productId ? "Atualizar Produto" : "Criar Produto"}
+                  {isLoading
+                    ? "Salvando..."
+                    : productId
+                    ? "Atualizar Produto"
+                    : "Criar Produto"}
                 </Button>
                 <Button type="button" variant="outline" className="w-full">
                   Salvar como Rascunho
@@ -441,5 +512,5 @@ export default function ProductForm({ productId }: ProductFormProps) {
         </div>
       </div>
     </form>
-  )
+  );
 }

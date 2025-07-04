@@ -2,14 +2,29 @@ import CategoryForm from "../../components/CategoryForm";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { getCategory } from "../../lib/actions/get-category";
 
-interface EditCategoryPageProps {
-  params: {
-    id: string;
-  };
-}
+export default async function EditCategoryPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const queryClient = new QueryClient();
+  const { id: categoryId } = await params;
 
-export default function EditCategoryPage({ params }: EditCategoryPageProps) {
+  await queryClient.prefetchQuery({
+    queryKey: ["category", categoryId],
+    queryFn: () =>
+      getCategory({
+        categoryId,
+      }),
+  });
+
   return (
     <div className="space-y-6">
       <div className="flex items-center space-x-4">
@@ -23,8 +38,9 @@ export default function EditCategoryPage({ params }: EditCategoryPageProps) {
           <p className="text-gray-600">Modifique os dados da categoria</p>
         </div>
       </div>
-
-      <CategoryForm categoryId={params.id} />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <CategoryForm categoryId={categoryId} />
+      </HydrationBoundary>
     </div>
   );
 }
