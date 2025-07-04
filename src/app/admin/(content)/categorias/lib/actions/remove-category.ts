@@ -6,7 +6,7 @@ import { UnauthorizedError } from "@/lib/errors/unauthorized-error";
 import { UnexpectedError } from "@/lib/errors/unexpected-error";
 
 interface RemoveCategoryProps {
-  categoryId: string;
+  categoryId?: string;
 }
 
 export async function removeCategory({ categoryId }: RemoveCategoryProps) {

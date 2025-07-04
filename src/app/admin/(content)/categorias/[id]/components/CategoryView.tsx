@@ -3,15 +3,15 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { CategoryProps } from "@/types/category";
-import { getCategory } from "../lib/actions/get-category";
+import { getCategory } from "../../lib/actions/get-category";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { ProductCardSkeleton } from "@/components/ui/skeleton";
-import { CategoryBasicInfo } from "../[id]/components/CategoryBasicInfo";
-import { CategorySeoInfo } from "../[id]/components/CategorySeoInfo";
-import { CategoryStats } from "../[id]/components/CategoryStats";
-import { CategoryActions } from "../[id]/components/CategoryActions";
-import { CategorySystemInfo } from "../[id]/components/CategorySystemInfo";
-import { CategoryRelatedLinks } from "../[id]/components/CategoryRelatedLinks";
+import { CategoryBasicInfo } from "../components/CategoryBasicInfo";
+import { CategorySeoInfo } from "../components/CategorySeoInfo";
+import { CategoryStats } from "../components/CategoryStats";
+import { CategoryActions } from "../components/CategoryActions";
+import { CategorySystemInfo } from "../components/CategorySystemInfo";
+import { CategoryRelatedLinks } from "../components/CategoryRelatedLinks";
 
 interface CategoryViewProps {
   categoryId: string;

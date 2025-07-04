@@ -1,8 +1,12 @@
 import { ArrowLeft, Edit } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import CategoryView from "../components/CategoryView";
-import { QueryClient } from "@tanstack/react-query";
+import CategoryView from "./components/CategoryView";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { getCategory } from "../lib/actions/get-category";
 
 export default async function CategoryPage({
@@ -44,8 +48,9 @@ export default async function CategoryPage({
           </Link>
         </Button>
       </div>
-
-      <CategoryView categoryId={categoryId} />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <CategoryView categoryId={categoryId} />
+      </HydrationBoundary>
     </div>
   );
 }
