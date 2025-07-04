@@ -1,10 +1,13 @@
 import axios from "axios";
 import { cookies } from "next/headers";
 import { decrypt } from "@/lib/actions/decrypt";
+import { deleteSession } from "../login/lib/actions/logout";
 
 const API_BASE_URL = process.env.ADMIN_API_URL;
 
-console.log("API_BASE_URL:", API_BASE_URL);
+const isServer = () => {
+  return typeof window === "undefined";
+};
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -35,7 +38,12 @@ api.interceptors.response.use(
     return response;
   },
   function (error) {
-    console.log("Error in API response:", error);
+    if (error.response?.status === 401) {
+      deleteSession();
+      if (!isServer()) {
+        window.location.href = "/admin/login";
+      }
+    }
     // Qualquer código de status que não esteja no limite do código 2xx faz com que está função seja acionada
     // Faz alguma coisa com o erro da resposta
     return Promise.reject(error);
