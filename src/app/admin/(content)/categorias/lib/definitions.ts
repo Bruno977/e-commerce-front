@@ -9,7 +9,7 @@ export const CategoryFormSchema = z.object({
     .string()
     .min(5, { message: "Deve conter no minimo 5 caracteres" })
     .trim(),
-  isActive: z.boolean().default(true),
+  isActive: z.boolean(),
   image: z.instanceof(File).optional(),
   metaTitle: z.string().optional(),
   metaDescription: z.string().optional(),

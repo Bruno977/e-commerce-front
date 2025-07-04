@@ -1,4 +1,3 @@
-import CategoryForm from "../../components/CategoryForm";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { getCategory } from "../../lib/actions/get-category";
+import CategoryForm from "../../nova/components/CategoryForm";
 
 export default async function EditCategoryPage({
   params,

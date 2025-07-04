@@ -1,4 +1,4 @@
-import CategoryForm from "../components/CategoryForm";
+import CategoryForm from "./components/CategoryForm";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
