@@ -21,6 +21,17 @@ import { PaginationProps } from "@/types/pagination";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { TableRowSkeleton } from "@/components/ui/skeleton";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface DataProps {
   categories: CategoryProps[];
@@ -125,21 +136,61 @@ export default function CategoriesTable() {
                         </TableCell>
                         <TableCell>
                           <div className="flex space-x-2">
-                            <Button variant="ghost" size="icon" asChild>
+                            <Button
+                              className="cursor-pointer"
+                              variant="ghost"
+                              size="icon"
+                              asChild
+                            >
                               <Link href={`/admin/categorias/${category.id}`}>
                                 <Eye className="w-4 h-4" />
                               </Link>
                             </Button>
-                            <Button variant="ghost" size="icon" asChild>
+                            <Button
+                              className="cursor-pointer"
+                              variant="ghost"
+                              size="icon"
+                              asChild
+                            >
                               <Link
                                 href={`/admin/categorias/${category.id}/editar`}
                               >
                                 <Edit className="w-4 h-4" />
                               </Link>
                             </Button>
-                            <Button variant="ghost" size="icon">
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  className="cursor-pointer"
+                                  variant="ghost"
+                                  size="icon"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>
+                                    Tem certeza que deseja excluir esta
+                                    categoria?
+                                  </AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Esta ação não poderá ser desfeita.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel className="cursor-pointer">
+                                    Cancel
+                                  </AlertDialogCancel>
+                                  <AlertDialogAction
+                                    variant={"destructive"}
+                                    className="cursor-pointer"
+                                  >
+                                    Remover
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
                           </div>
                         </TableCell>
                       </TableRow>
