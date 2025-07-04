@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Edit, Trash2, Eye } from "lucide-react";
+import { Edit, Eye } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCategories } from "../lib/actions/get-categories";
 import { CategoryProps } from "@/types/category";
@@ -21,19 +21,9 @@ import { PaginationProps } from "@/types/pagination";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { TableRowSkeleton } from "@/components/ui/skeleton";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { removeCategory } from "../lib/actions/remove-category";
 import { toast } from "sonner";
+import { CategoryModalDelete } from "./CategoryModalDelete";
 
 interface DataProps {
   categories: CategoryProps[];
@@ -76,10 +66,6 @@ export default function CategoriesTable() {
     },
   });
 
-  const handleRetry = () => {
-    refetch();
-  };
-
   return (
     <Card>
       <CardHeader>
@@ -87,7 +73,7 @@ export default function CategoriesTable() {
       </CardHeader>
 
       {error ? (
-        <ErrorMessage message={error.message} onRetry={handleRetry} />
+        <ErrorMessage message={error.message} onRetry={refetch} />
       ) : (
         <CardContent>
           <div className="overflow-x-auto">
@@ -173,42 +159,11 @@ export default function CategoriesTable() {
                                 <Edit className="w-4 h-4" />
                               </Link>
                             </Button>
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                <Button
-                                  className="cursor-pointer"
-                                  variant="ghost"
-                                  size="icon"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </Button>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>
-                                    Tem certeza que deseja excluir esta
-                                    categoria?
-                                  </AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    Esta ação não poderá ser desfeita.
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel className="cursor-pointer">
-                                    Cancel
-                                  </AlertDialogCancel>
-                                  <AlertDialogAction
-                                    variant={"destructive"}
-                                    className="cursor-pointer"
-                                    onClick={() =>
-                                      categoryMutation.mutate(category.id)
-                                    }
-                                  >
-                                    Remover
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
+                            <CategoryModalDelete
+                              handleClick={() =>
+                                categoryMutation.mutate(category.id)
+                              }
+                            />
                           </div>
                         </TableCell>
                       </TableRow>
