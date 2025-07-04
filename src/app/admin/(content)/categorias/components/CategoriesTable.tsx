@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Edit, Trash2, Eye } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCategories } from "../lib/actions/get-categories";
 import { CategoryProps } from "@/types/category";
 import Pagination from "@/components/pagination";
@@ -32,6 +32,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { removeCategory } from "../lib/actions/remove-category";
+import { toast } from "sonner";
 
 interface DataProps {
   categories: CategoryProps[];
@@ -40,6 +42,7 @@ interface DataProps {
 
 export default function CategoriesTable() {
   const searchParams = useSearchParams();
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
@@ -60,6 +63,18 @@ export default function CategoriesTable() {
   const handlePageChange = (page: number) => {
     router.push(`?page=${page}&perPage=${itemsPerPage}`);
   };
+
+  const categoryMutation = useMutation({
+    mutationFn: async (categoryId: string) => {
+      await removeCategory({ categoryId });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+    },
+    onError: (error) => {
+      toast.error(`Erro ao remover categoria: ${error.message}`);
+    },
+  });
 
   const handleRetry = () => {
     refetch();
@@ -88,7 +103,7 @@ export default function CategoriesTable() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isLoading ? (
+                {isLoading || categoryMutation.isPending ? (
                   <TableRowSkeleton rows={10} />
                 ) : (
                   <>
@@ -185,6 +200,9 @@ export default function CategoriesTable() {
                                   <AlertDialogAction
                                     variant={"destructive"}
                                     className="cursor-pointer"
+                                    onClick={() =>
+                                      categoryMutation.mutate(category.id)
+                                    }
                                   >
                                     Remover
                                   </AlertDialogAction>
@@ -200,7 +218,7 @@ export default function CategoriesTable() {
               </TableBody>
             </Table>
           </div>
-          {!isLoading && (
+          {(!isLoading || categoryMutation.isPending) && (
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
